@@ -1,7 +1,56 @@
-import React from 'react'
+import React, { useState } from 'react'
 import NavBar from './NavBar'
+import axios from 'axios'
 
 const AddDonor = () => {
+    const [input,changeInput] = useState(
+        {
+            donor_name: "",
+            age: "",
+            gender: "",
+            blood_group: "",
+            phone: "",
+            email: "",
+            city: "",
+            weight_kg: "",
+            last_donation_date: ""
+        }
+    )
+
+    const inputHandler = (event) => {
+        
+        changeInput({
+            ...input,[event.target.name] : event.target.value
+        })
+    }
+
+    const readValue = () => {
+        axios.post("https://host-demo-app.onrender.com/api/add-donor",input)
+        .then(
+            (response) => {
+                console.log(response.data)
+                alert(response.data.message)
+                changeInput({
+                    donor_name: "",
+                    age: "",
+                    gender: "",
+                    blood_group: "",
+                    phone: "",
+                    email: "",
+                    city: "",
+                    weight_kg: "",
+                    last_donation_date: ""
+                })
+            }
+        )
+        .catch((error) => {
+            alert("Failed to add donor")
+            console.log(error)
+        })
+
+    } 
+    
+
   return (
     <div>
         <NavBar/>
@@ -16,6 +65,8 @@ const AddDonor = () => {
                   type="text"
                   className="form-control"
                   name="donor_name"
+                  value={input.donor_name}
+                  onChange={inputHandler}
                   required
                 />
               </div>
@@ -28,6 +79,8 @@ const AddDonor = () => {
                   name="age"
                   min="18"
                   max="65"
+                  value={input.age}
+                  onChange={inputHandler}
                   required
                 />
               </div>
@@ -38,6 +91,8 @@ const AddDonor = () => {
                   className="form-select"
                   name="gender"
                   required
+                  value={input.gender}
+                  onChange={inputHandler}
                 >
                   <option value="">Select Gender</option>
                   <option value="Male">Male</option>
@@ -51,6 +106,8 @@ const AddDonor = () => {
                 <select
                   className="form-select"
                   name="blood_group"
+                  value={input.blood_group}
+                  onChange={inputHandler}
                   required
                 >
                   <option value="">Select Blood Group</option>
@@ -74,6 +131,8 @@ const AddDonor = () => {
                   pattern="[0-9]{10}"
                   maxLength="10"
                   required
+                  value={input.phone}
+                  onChange={inputHandler}
                 />
               </div>
 
@@ -83,6 +142,8 @@ const AddDonor = () => {
                   type="email"
                   className="form-control"
                   name="email"
+                  value={input.email}
+                  onChange={inputHandler}
                 />
               </div>
 
@@ -93,6 +154,8 @@ const AddDonor = () => {
                   className="form-control"
                   name="city"
                   required
+                  value={input.city}
+                  onChange={inputHandler}
                 />
               </div>
 
@@ -104,6 +167,8 @@ const AddDonor = () => {
                   name="weight_kg"
                   min="50"
                   required
+                  value={input.weight_kg}
+                  onChange={inputHandler}
                 />
               </div>
 
@@ -113,10 +178,12 @@ const AddDonor = () => {
                   type="date"
                   className="form-control"
                   name="last_donation_date"
+                  value={input.last_donation_date}
+                  onChange={inputHandler}
                 />
               </div>
               <div className="col-12 col-sm-12 mb-3">
-                <button className="btn btn-primary">Submit</button>
+                <button className="btn btn-primary" onClick={readValue} >Submit</button>
               </div>
 
             </div>

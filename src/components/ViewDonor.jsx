@@ -5,14 +5,19 @@ import NavBar from './NavBar'
 
 const ViewDonor = () => {
     const [data,changeData] = useState([])
+    const [loading, setLoading] = useState(true)
 
     const fetchData = () => {
         axios.get("https://host-demo-app.onrender.com/api/donors")
         .then(
             (response) => {
                 changeData(response.data)
-            },[]
-        ).catch()
+                setLoading(false)
+            }
+        ).catch((error) => {
+            console.log(error)
+            setLoading(false)
+        })
     }
 
     useEffect(
@@ -20,12 +25,16 @@ const ViewDonor = () => {
             fetchData()
         },[]
     )
+    
   return (
     <div>
         <NavBar/>
         <div className="container mt-3">
             <div className="row">
                 <div className="col-12">
+                    {loading ? (
+                        <h3 className="text-center">Loading...</h3>
+                    ) : (
                    <table className="table table-hover">
                         <thead className="table-dark">
                             <tr>
@@ -54,6 +63,7 @@ const ViewDonor = () => {
                             })}
                         </tbody>
                     </table>
+                    )}
                 </div>
             </div>
         </div>
