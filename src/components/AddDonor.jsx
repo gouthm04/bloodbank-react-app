@@ -1,8 +1,10 @@
 import React from 'react'
+import NavBar from './NavBar'
 
 const AddDonor = () => {
   return (
     <div>
+        <NavBar/>
       <div className="container mt-3">
         <div className="row">
           <div className="col-12">
